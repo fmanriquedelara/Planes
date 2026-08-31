@@ -42,28 +42,75 @@ func _ready():
 	# Crear shader
 	var shader = Shader.new()
 
+	var original := wing.mesh.surface_get_material(0) as BaseMaterial3D
+
+	print("ALBEDO TEXTURE: ", original.albedo_texture)
+	print("ALBEDO COLOR: ", original.albedo_color)
+	print("METALLIC: ", original.metallic)
+	print("ROUGHNESS: ", original.roughness)
+	print("NORMAL: ", original.normal_texture)
+	print("AO: ", original.ao_texture)
+	print("EMISSION: ", original.emission_enabled)
+
+
 	shader.code = """
 shader_type spatial;
+
+uniform sampler2D albedo_texture : source_color;
+uniform sampler2D normal_texture;
 
 uniform float tip_deformationL = 0.0;
 uniform float tip_deformationR = 0.0;
 
+
 void vertex() {
+
 	if (VERTEX.y > 0.0) {
+
 		VERTEX.z += tip_deformationR
 			* VERTEX.y
 			* VERTEX.y;
+
 	} else {
+
 		VERTEX.z += tip_deformationL
 			* VERTEX.y
 			* VERTEX.y;
 	}
 }
+
+
+void fragment() {
+
+	// Albedo
+	ALBEDO = texture(albedo_texture, UV).rgb;
+
+	// PBR
+	METALLIC = 1.0;
+	ROUGHNESS = 1.0;
+
+	// Normal map
+
+
+}
+
 """
 
+	wing_material = ShaderMaterial.new()
 	wing_material.shader = shader
 
-	# Asignar shader al ala
+	# Pasar las texturas originales al shader
+	wing_material.set_shader_parameter(
+		"albedo_texture",
+		original.albedo_texture
+	)
+
+	wing_material.set_shader_parameter(
+		"normal_texture",
+		original.normal_texture
+	)
+
+	# Asignar el shader
 	wing.material_override = wing_material
 
 	# Valor inicial
