@@ -1,11 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://clpemks1wa84k"]
+[gd_scene load_steps=16 format=3 uid="uid://clpemks1wa84k"]
 
 [ext_resource type="Script" path="res://Plane.gd" id="1_h3wty"]
 [ext_resource type="ArrayMesh" uid="uid://dm5ln70oxqah5" path="res://Example.obj" id="1_iqdbv"]
 [ext_resource type="PackedScene" uid="uid://sw4ftla1bb23" path="res://eurofighter_typhoon_-_fighter_jet_-_free.glb" id="3_ihj6d"]
+[ext_resource type="Shader" path="res://Physics/Aerolastic.gdshader" id="4_lylua"]
 [ext_resource type="PackedScene" uid="uid://bv65gjggmasw7" path="res://fa-18e_super_hornet_usa.glb" id="4_vwmg7"]
 [ext_resource type="AudioStream" uid="uid://b0pkn38di051w" path="res://534856__m_cel__jet-engine.ogg" id="5_sxe7x"]
 [ext_resource type="PackedScene" uid="uid://b6i30x14cim0b" path="res://low-poly_city_buildings.glb" id="6_ans8s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_chhg3"]
+render_priority = 0
+shader = ExtResource("4_lylua")
+shader_parameter/tip_deformation = 0.001
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7oudr"]
 
@@ -43,8 +49,14 @@ mesh = ExtResource("1_iqdbv")
 transform = Transform3D(0.0364693, 0, 0.999335, 0, 1, 0, -0.999335, 0, 0.0364693, 5.03574, 1.34941, 0)
 visible = false
 
-[node name="eurofighter_typhoon_-_fighter_jet_-_free" parent="Plane" instance=ExtResource("3_ihj6d")]
+[node name="Eurofighter" parent="Plane" instance=ExtResource("3_ihj6d")]
 transform = Transform3D(-0.04, 0, -6.03983e-09, 0, 0.04, 0, 6.03983e-09, 0, -0.04, 0, 0, 0)
+
+[node name="Object_4" parent="Plane/Eurofighter/Sketchfab_model/root/GLTF_SceneRootNode/Airframe_0" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_chhg3")
+
+[node name="WeaponRails_8" parent="Plane/Eurofighter/Sketchfab_model/root/GLTF_SceneRootNode" index="7"]
+visible = false
 
 [node name="fa-18e_super_hornet_usa" parent="Plane" instance=ExtResource("4_vwmg7")]
 transform = Transform3D(-0.04, 0, -3.49691e-09, 0, 0.04, 0, 3.49691e-09, 0, -0.04, -1, 0, 0)
@@ -71,3 +83,5 @@ mesh = SubResource("BoxMesh_6fivi")
 
 [node name="low-poly_city_buildings" parent="." instance=ExtResource("6_ans8s")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -277.062, 0, 0)
+
+[editable path="Plane/Eurofighter"]
