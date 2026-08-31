@@ -193,8 +193,8 @@ func _update_dynamics(delta):
 	# Enviar deformación al shader
 	# ------------------------------------
 
-	var tip_deformationL_0 = (Flift - MRoll) / 500.0
-	var tip_deformationR_0 = (Flift + MRoll) / 500.0
+	var tip_deformationL_0 = (Flift - MRoll) / 2000.0
+	var tip_deformationR_0 = (Flift + MRoll) / 2000.0
 
 	
 	
