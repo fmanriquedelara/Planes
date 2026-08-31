@@ -51,17 +51,20 @@ func _ready():
 	print("NORMAL: ", original.normal_texture)
 	print("AO: ", original.ao_texture)
 	print("EMISSION: ", original.emission_enabled)
-
+	print("specular: ", original.metallic_specular)
+	print("normal_scale: ", original.normal_scale)
+	print("metallic_texture: ", original.metallic_texture)
+	print("roughness_texture: ", original.roughness_texture)
 
 	shader.code = """
 shader_type spatial;
 
 uniform sampler2D albedo_texture : source_color;
 uniform sampler2D normal_texture;
+uniform sampler2D metallic_roughness_texture;
 
 uniform float tip_deformationL = 0.0;
 uniform float tip_deformationR = 0.0;
-
 
 void vertex() {
 
@@ -79,19 +82,23 @@ void vertex() {
 	}
 }
 
-
 void fragment() {
 
 	// Albedo
 	ALBEDO = texture(albedo_texture, UV).rgb;
 
-	// PBR
-	METALLIC = 1.0;
-	ROUGHNESS = 1.0;
+	// Metallic + Roughness
+	vec4 mr = texture(metallic_roughness_texture, UV);
+
+	METALLIC = mr.b;
+	ROUGHNESS = mr.g;
+
+	// Specular
+	SPECULAR = 0.5;
 
 	// Normal map
-
-
+	NORMAL_MAP = texture(normal_texture, UV).rgb;
+	NORMAL_MAP_DEPTH = 1.0;
 }
 
 """
@@ -108,6 +115,11 @@ void fragment() {
 	wing_material.set_shader_parameter(
 		"normal_texture",
 		original.normal_texture
+	)
+
+	wing_material.set_shader_parameter(
+		"metallic_roughness_texture",
+		original.metallic_texture
 	)
 
 	# Asignar el shader
@@ -181,8 +193,8 @@ func _update_dynamics(delta):
 	# Enviar deformación al shader
 	# ------------------------------------
 
-	var tip_deformationL_0 = (Flift - MRoll) / 1000.0
-	var tip_deformationR_0 = (Flift + MRoll) / 1000.0
+	var tip_deformationL_0 = (Flift - MRoll) / 500.0
+	var tip_deformationR_0 = (Flift + MRoll) / 500.0
 
 	
 	
