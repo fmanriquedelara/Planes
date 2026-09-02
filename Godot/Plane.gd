@@ -25,6 +25,7 @@ var tau_pitch := 0.2
 var tau_yaw := 0.2
 
 @onready var engine_sound: AudioStreamPlayer3D = $EngineSound
+@onready var gun_sound: AudioStreamPlayer3D = $GunSound
 @onready var wing: MeshInstance3D = $Eurofighter/Sketchfab_model/root/GLTF_SceneRootNode/Airframe_0/Object_4
 
 var wing_material: ShaderMaterial
@@ -144,6 +145,12 @@ func _process(delta):
 	var throttle = Input.get_axis("rBrake", "rEngine")
 
 	engine_sound.volume_db = lerp(-8.0, 0.0, throttle)
+
+	if Input.is_action_pressed("Gun"):
+		if not gun_sound.playing:
+			gun_sound.play()
+	else:
+		gun_sound.stop()
 
 
 func _update_dynamics(delta):

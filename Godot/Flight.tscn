@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://clpemks1wa84k"]
+[gd_scene load_steps=21 format=3 uid="uid://clpemks1wa84k"]
 
 [ext_resource type="Script" path="res://Plane.gd" id="1_h3wty"]
 [ext_resource type="ArrayMesh" uid="uid://dm5ln70oxqah5" path="res://Example.obj" id="1_iqdbv"]
 [ext_resource type="PackedScene" uid="uid://sw4ftla1bb23" path="res://eurofighter_typhoon_-_fighter_jet_-_free.glb" id="3_ihj6d"]
 [ext_resource type="PackedScene" uid="uid://bv65gjggmasw7" path="res://fa-18e_super_hornet_usa.glb" id="4_vwmg7"]
-[ext_resource type="AudioStream" uid="uid://b0pkn38di051w" path="res://534856__m_cel__jet-engine.ogg" id="5_sxe7x"]
+[ext_resource type="AudioStream" uid="uid://dvxwgpt7yg2hp" path="res://Sounds/JetEngineShort.ogg" id="5_vl10w"]
 [ext_resource type="PackedScene" uid="uid://b6i30x14cim0b" path="res://low-poly_city_buildings.glb" id="6_ans8s"]
+[ext_resource type="AudioStream" uid="uid://ddms14iugpg5k" path="res://Sounds/GunTrimmed.wav" id="6_cihpu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7oudr"]
 
@@ -24,6 +25,32 @@ sky = SubResource("Sky_jrcuc")
 [sub_resource type="Skin" id="Skin_587ff"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_6fivi"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_p15a7"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gt80h"]
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0hwt0"]
+seamless = true
+noise = SubResource("FastNoiseLite_gt80h")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6v3am"]
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4rmdg"]
+width = 1024
+height = 1024
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+noise = SubResource("FastNoiseLite_6v3am")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gcvy4"]
+albedo_color = Color(0.27451, 0.501961, 0.643137, 1)
+albedo_texture = SubResource("NoiseTexture2D_0hwt0")
+roughness_texture = SubResource("NoiseTexture2D_4rmdg")
+uv1_scale = Vector3(5, 5, 5)
 
 [node name="Node3D" type="Node3D"]
 
@@ -57,7 +84,10 @@ visible = false
 transform = Transform3D(0.0364693, 0, 0.999335, 0, 1, 0, -0.999335, 0, 0.0364693, -2.54399, 0.486725, 0)
 
 [node name="EngineSound" type="AudioStreamPlayer3D" parent="Plane"]
-stream = ExtResource("5_sxe7x")
+stream = ExtResource("5_vl10w")
+
+[node name="GunSound" type="AudioStreamPlayer3D" parent="Plane"]
+stream = ExtResource("6_cihpu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_es76t")
@@ -65,14 +95,21 @@ camera_attributes = SubResource("CameraAttributesPhysical_2hm2x")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, -1.07809, 0)
+visible = false
 mesh = SubResource("PlaneMesh_gnj2k")
 skin = SubResource("Skin_587ff")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(20, 0, 0, 0, 100, 0, 0, 0, 20, -100, 50, 0)
+visible = false
 mesh = SubResource("BoxMesh_6fivi")
 
 [node name="low-poly_city_buildings" parent="." instance=ExtResource("6_ans8s")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -277.062, 0, 0)
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(10000, 0, 0, 0, -0.000437114, 10000, 0, -10000, -0.000437114, 0, 0, 0)
+mesh = SubResource("QuadMesh_p15a7")
+surface_material_override/0 = SubResource("StandardMaterial3D_gcvy4")
 
 [editable path="Plane/Eurofighter"]
