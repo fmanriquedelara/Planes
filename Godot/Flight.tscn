@@ -1,3 +1,178 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fbf51ef6851b2ee5c60b9a615cbde46f81dff0c6c8c15a01a305356fcbecc3db
-size 3283
+[gd_scene load_steps=23 format=3 uid="uid://clpemks1wa84k"]
+
+[ext_resource type="Script" path="res://Plane.gd" id="1_h3wty"]
+[ext_resource type="ArrayMesh" uid="uid://dm5ln70oxqah5" path="res://Example.obj" id="1_iqdbv"]
+[ext_resource type="PackedScene" uid="uid://b8cwx4fttxtin" path="res://Planes/HighResEurofighter.glb" id="4_mvbn2"]
+[ext_resource type="PackedScene" uid="uid://bv65gjggmasw7" path="res://fa-18e_super_hornet_usa.glb" id="4_vwmg7"]
+[ext_resource type="AudioStream" uid="uid://dvxwgpt7yg2hp" path="res://Sounds/JetEngineShort.ogg" id="5_vl10w"]
+[ext_resource type="PackedScene" uid="uid://b6i30x14cim0b" path="res://low-poly_city_buildings.glb" id="6_ans8s"]
+[ext_resource type="AudioStream" uid="uid://ddms14iugpg5k" path="res://Sounds/GunTrimmed.wav" id="6_cihpu"]
+[ext_resource type="PackedScene" uid="uid://b85kp0600cgrx" path="res://Maps/BrackleyHQ.glb" id="8_gwx06"]
+
+[sub_resource type="FontFile" id="FontFile_keo3p"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/2/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/3/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/1/0 = Vector2(0, 0)
+cache/0/2/0/ascent = 0.0
+cache/0/2/0/descent = 0.0
+cache/0/2/0/underline_position = 0.0
+cache/0/2/0/underline_thickness = 0.0
+cache/0/2/0/scale = 1.0
+cache/0/2/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/2/0/kerning_overrides/2/0 = Vector2(0, 0)
+cache/0/2/0/kerning_overrides/3/0 = Vector2(0, 0)
+cache/0/2/0/kerning_overrides/1/0 = Vector2(0, 0)
+cache/0/3/0/ascent = 0.0
+cache/0/3/0/descent = 0.0
+cache/0/3/0/underline_position = 0.0
+cache/0/3/0/underline_thickness = 0.0
+cache/0/3/0/scale = 1.0
+cache/0/3/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/3/0/kerning_overrides/2/0 = Vector2(0, 0)
+cache/0/3/0/kerning_overrides/3/0 = Vector2(0, 0)
+cache/0/3/0/kerning_overrides/1/0 = Vector2(0, 0)
+cache/0/1/0/ascent = 0.0
+cache/0/1/0/descent = 0.0
+cache/0/1/0/underline_position = 0.0
+cache/0/1/0/underline_thickness = 0.0
+cache/0/1/0/scale = 1.0
+cache/0/1/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/1/0/kerning_overrides/2/0 = Vector2(0, 0)
+cache/0/1/0/kerning_overrides/3/0 = Vector2(0, 0)
+cache/0/1/0/kerning_overrides/1/0 = Vector2(0, 0)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7oudr"]
+
+[sub_resource type="Sky" id="Sky_jrcuc"]
+sky_material = SubResource("ProceduralSkyMaterial_7oudr")
+
+[sub_resource type="Environment" id="Environment_es76t"]
+background_mode = 2
+background_color = Color(0.301961, 0.65098, 1, 1)
+sky = SubResource("Sky_jrcuc")
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_2hm2x"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gnj2k"]
+
+[sub_resource type="Skin" id="Skin_587ff"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6fivi"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_p15a7"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gt80h"]
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0hwt0"]
+seamless = true
+noise = SubResource("FastNoiseLite_gt80h")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6v3am"]
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4rmdg"]
+width = 1024
+height = 1024
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+noise = SubResource("FastNoiseLite_6v3am")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gcvy4"]
+albedo_color = Color(0.27451, 0.501961, 0.643137, 1)
+albedo_texture = SubResource("NoiseTexture2D_0hwt0")
+roughness_texture = SubResource("NoiseTexture2D_4rmdg")
+uv1_scale = Vector3(5, 5, 5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Plane" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.4766, 10.8046, 0)
+script = ExtResource("1_h3wty")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plane"]
+visible = false
+mesh = ExtResource("1_iqdbv")
+
+[node name="Camera3D" type="Camera3D" parent="Plane"]
+transform = Transform3D(0.0364693, 0, 0.999335, 0, 1, 0, -0.999335, 0, 0.0364693, 5.03574, 1.34941, 0)
+visible = false
+
+[node name="fa-18e_super_hornet_usa" parent="Plane" instance=ExtResource("4_vwmg7")]
+transform = Transform3D(-0.04, 0, -3.49691e-09, 0, 0.04, 0, 3.49691e-09, 0, -0.04, -1, 0, 0)
+visible = false
+
+[node name="EngineSound" type="AudioStreamPlayer3D" parent="Plane"]
+stream = ExtResource("5_vl10w")
+
+[node name="GunSound" type="AudioStreamPlayer3D" parent="Plane"]
+stream = ExtResource("6_cihpu")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Plane"]
+
+[node name="Label" type="Label" parent="Plane/CanvasLayer"]
+offset_left = 31.0
+offset_top = 35.0
+offset_right = 71.0
+offset_bottom = 61.0
+theme_override_colors/font_color = Color(0, 0.486275, 0, 1)
+text = "Air speed"
+
+[node name="Label2" type="Label" parent="Plane/CanvasLayer"]
+offset_left = 545.0
+offset_top = 305.0
+offset_right = 585.0
+offset_bottom = 331.0
+theme_override_colors/font_color = Color(0, 0.741176, 0, 1)
+theme_override_fonts/font = SubResource("FontFile_keo3p")
+text = "w"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CameraCockpit" type="Node3D" parent="Plane"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.584, 0.46, 0)
+
+[node name="Camera3D_cockpit" type="Camera3D" parent="Plane/CameraCockpit"]
+fov = 52.6
+near = 0.01
+
+[node name="Eurofighter" parent="Plane" instance=ExtResource("4_mvbn2")]
+transform = Transform3D(-0.04, 0, -6.03983e-09, 0, 0.04, 0, 6.03983e-09, 0, -0.04, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_es76t")
+camera_attributes = SubResource("CameraAttributesPhysical_2hm2x")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, -1.07809, 0)
+visible = false
+mesh = SubResource("PlaneMesh_gnj2k")
+skin = SubResource("Skin_587ff")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 100, 0, 0, 0, 20, -100, 50, 0)
+visible = false
+mesh = SubResource("BoxMesh_6fivi")
+
+[node name="low-poly_city_buildings" parent="." instance=ExtResource("6_ans8s")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -277.062, 0, 0)
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(10000, 0, 0, 0, -0.000437114, 10000, 0, -10000, -0.000437114, 0, 0, 0)
+visible = false
+mesh = SubResource("QuadMesh_p15a7")
+surface_material_override/0 = SubResource("StandardMaterial3D_gcvy4")
+
+[node name="BrackleyHQ" parent="." instance=ExtResource("8_gwx06")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -288.874, 0, 0)

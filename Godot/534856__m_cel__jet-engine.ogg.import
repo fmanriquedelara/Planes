@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:903be3c48207f13196c4d7b82b48729a914396ac916a2221299d664d26ca622f
-size 434
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b0pkn38di051w"
+path="res://.godot/imported/534856__m_cel__jet-engine.ogg-5de2ffa23c03b344f2134ed4e52bc142.oggvorbisstr"
+
+[deps]
+
+source_file="res://534856__m_cel__jet-engine.ogg"
+dest_files=["res://.godot/imported/534856__m_cel__jet-engine.ogg-5de2ffa23c03b344f2134ed4e52bc142.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
