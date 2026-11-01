@@ -17,17 +17,32 @@ Alternatively, from this repository:
 ```powershell
 .\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Editor
 .\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Play
+.\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Play -NativeResolution -Fullscreen
 ```
 
 `Play` runs the uncooked map through the installed editor executable in game
 mode. It is not a packaged Windows build. The local installation currently lacks
 the Windows SDK needed for packaging; editor rendering works without it.
 
+For this machine's **3440x1440** monitor, `-Ultrawide` selects that resolution.
+`-NativeResolution` reads the primary monitor instead. `-Fullscreen` selects a
+borderless game view; Alt+F4 closes it. Custom dimensions override the preset:
+
+```powershell
+.\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Play -Ultrawide -Fullscreen
+.\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Play -Width 2560 -Height 1080
+```
+
+The camera preserves vertical FOV and allows the viewport aspect to change.
+Ultrawide adds horizontal visibility rather than stretching the image or cropping
+the instrument panel vertically. It does not make the prototype a packaged game.
+
 ## Rebuild and capture
 
 ```powershell
 .\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Build
 .\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode Capture
+.\unreal-prototype\Scripts\Run-Prototype.ps1 -Mode GameCapture -Ultrawide
 ```
 
 Override `-EngineRoot` if Unreal is installed somewhere other than
@@ -45,6 +60,15 @@ does not open an interactive editor window. Output is
 Initial shader compilation and derived data generation can take time and disk
 space. Generated caches, logs and captures are ignored by Git.
 
+`GameCapture` runs the normal game renderer offscreen, waits 180 frames, then
+uses `Shot SHOWUI` with screen warnings enabled. It exits after 210 frames and
+saves `artifacts/game-WIDTHxHEIGHT.png`, a matching log and JSON metadata;
+its working log is `Saved/Logs/GameCapture.log`. The helper checks PNG dimensions.
+This is the appropriate startup-warning and viewport-aspect check. MRQ and
+HighResShot can suppress screen warnings and cannot substitute for that check.
+Resolution options apply to Play and GameCapture. MRQ Capture retains its saved
+1600x1000 output preset. Neither capture mode measures sustained performance.
+
 ## Review conditions and limits
 
 - Engine: 5.8.4, changelist 58902052; Direct3D 12 / Shader Model 6.
@@ -60,6 +84,15 @@ space. Generated caches, logs and captures are ignored by Git.
 - Fixed physical exposure: ISO 100, f/8, shutter 1/128 s (EV100 13).
 - Lumen lighting/reflections and Unreal volumetric clouds are visual-study
   settings. Aircraft Nanite is disabled for compatibility with imported materials.
+
+Lumen uses software tracing with generated mesh distance fields. Physical camera
+EV100 remains 13; cached-lighting pre-exposure is configured for that exposure
+range. Rendering-warning checks and ultrawide review are recorded in
+[UE-002](../tasks/UE-002.md).
+Normal-game 1600x1000 and 3440x1440 captures were inspected by Milu and Stark:
+the reported Lumen and cached-lighting exposure warnings are resolved, and the
+ultrawide view preserves vertical framing. Unrelated editor initialization
+warnings remain in logs; these checks do not establish a frame-rate result.
 
 Actual renders exposed and helped correct initial exposure and material-import
 problems. Review history and remaining findings are recorded in UE-001.

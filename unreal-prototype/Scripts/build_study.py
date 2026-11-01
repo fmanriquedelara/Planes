@@ -197,6 +197,11 @@ filmback.sensor_height = 22.5
 cc.set_editor_property("filmback", filmback)
 cc.set_editor_property("current_focal_length", 18.0)
 cc.set_editor_property("current_aperture", 8.0)
+# Keep the calibrated vertical framing; wide windows reveal more to the sides.
+cc.set_editor_property("constrain_aspect_ratio", False)
+cc.set_editor_property("override_aspect_ratio_axis_constraint", True)
+axis_name = next(name for name in dir(unreal.AspectRatioAxisConstraint) if "MAINTAIN_Y" in name.upper())
+cc.set_editor_property("aspect_ratio_axis_constraint", getattr(unreal.AspectRatioAxisConstraint, axis_name))
 focus = cc.get_editor_property("focus_settings")
 focus.focus_method = unreal.CameraFocusMethod.DISABLE
 cc.set_editor_property("focus_settings", focus)
@@ -261,6 +266,6 @@ unreal.EditorAssetLibrary.save_directory("/Game", only_if_is_dirty=True, recursi
 if not LEVEL.save_current_level():
     raise RuntimeError("Study map failed to save")
 camera_position = camera.get_actor_location()
-report = {"engine": unreal.SystemLibrary.get_engine_version(), "imported_actors": len(imported), "materials": sorted(set(material_names)), "camera_location_cm": [camera_position.x, camera_position.y, camera_position.z], "map": "/Game/Maps/CockpitStudy", "sequence": sequence.get_path_name(), "render_config": config.get_path_name(), "terrain": terrain_report, "intended_capture_pipeline": "real GPU Movie Render Queue", "render_verified_by_build": False, "limitations": ["Visual study, not interactive flight physics", "Existing cockpit texture detail limits", "Synthetic radar displays are demonstration art, not flight data", "Procedural countryside is a bounded visual study, not mapped real terrain"]}
+report = {"engine": unreal.SystemLibrary.get_engine_version(), "imported_actors": len(imported), "materials": sorted(set(material_names)), "camera_location_cm": [camera_position.x, camera_position.y, camera_position.z], "camera_constrain_aspect_ratio": cc.get_editor_property("constrain_aspect_ratio"), "camera_aspect_axis": str(cc.get_editor_property("aspect_ratio_axis_constraint")), "physical_exposure_ev100": 13.0, "cached_lighting_safe_ev_range": [-4, 16], "lumen_tracing": "software mesh distance fields", "map": "/Game/Maps/CockpitStudy", "sequence": sequence.get_path_name(), "render_config": config.get_path_name(), "terrain": terrain_report, "intended_capture_pipeline": "real GPU Movie Render Queue", "render_verified_by_build": False, "limitations": ["Visual study, not interactive flight physics", "Existing cockpit texture detail limits", "Synthetic radar displays are demonstration art, not flight data", "Procedural countryside is a bounded visual study, not mapped real terrain"]}
 (OUT / "build-report.json").write_text(json.dumps(report, indent=2))
 log("BUILD_COMPLETE " + json.dumps(report))

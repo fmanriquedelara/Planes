@@ -15,6 +15,7 @@ criteria and review are satisfied; record unavailable checks explicitly.
 | WEB-001 | [Separate Three.js graphics prototype](WEB-001.md) | Vision / Milu | Stark | in review |
 | WEB-002 | [120 FPS target profile and measurement](WEB-002.md) | Vision / Milu | Stark | done |
 | UE-001 | [Unreal cockpit graphics prototype](UE-001.md) | Vision / Milu | Stark | in review |
+| UE-002 | [Startup rendering warnings, ultrawide and agent launch workflow](UE-002.md) | Vision / Milu | Stark | done |
 
 This board records planned work; ready does not mean an agent is currently running.
 Copy `TEMPLATE.md` for future tasks, including physics and other specialties.
