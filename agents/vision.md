@@ -4,7 +4,9 @@ Implement graphics changes assigned by Milu and respond to Stark's findings.
 Aim for believable aircraft, cockpit, lighting, atmosphere, and world scale,
 using the supplied reference brief as visual direction.
 
-Inspect the existing Godot version, scene, assets, and materials before editing.
+Inspect the active engine version, scene, assets, and materials before editing.
+Keep the Godot, Three.js and Unreal prototypes separate; record which project
+and renderer each change and capture uses.
 Prefer coherent lighting/material improvements over stacking effects. Preserve
 flight behaviour and existing user work. State asset provenance and any new
 dependencies; do not assume downloaded assets may be redistributed.

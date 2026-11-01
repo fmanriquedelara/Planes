@@ -14,6 +14,7 @@ criteria and review are satisfied; record unavailable checks explicitly.
 | GFX-006 | [Cockpit framing, daylight and cumulus refinement](GFX-006.md) | Vision / Milu | Stark | done |
 | WEB-001 | [Separate Three.js graphics prototype](WEB-001.md) | Vision / Milu | Stark | in review |
 | WEB-002 | [120 FPS target profile and measurement](WEB-002.md) | Vision / Milu | Stark | done |
+| UE-001 | [Unreal cockpit graphics prototype](UE-001.md) | Vision / Milu | Stark | in review |
 
 This board records planned work; ready does not mean an agent is currently running.
 Copy `TEMPLATE.md` for future tasks, including physics and other specialties.

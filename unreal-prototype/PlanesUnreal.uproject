@@ -1,0 +1,16 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Visual prototype",
+  "Description": "Isolated PlanesRace cockpit visual study",
+  "Modules": [],
+  "DisableEnginePluginsByDefault": true,
+  "Plugins": [
+    {"Name": "PythonScriptPlugin", "Enabled": true},
+    {"Name": "EditorScriptingUtilities", "Enabled": true},
+    {"Name": "InterchangeEditor", "Enabled": true},
+    {"Name": "MovieRenderPipeline", "Enabled": true},
+    {"Name": "SequencerScripting", "Enabled": true},
+    {"Name": "AndroidFileServer", "Enabled": false}
+  ]
+}
