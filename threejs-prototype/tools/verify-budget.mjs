@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import { RenderBudget } from '../src/render-budget.js';
+
+globalThis.document = { hidden: false };
+globalThis.devicePixelRatio = 1;
+const adjustments = [];
+const make = () => {
+  const budget = new RenderBudget({ getExtension: () => null }, value => adjustments.push(value));
+  budget.configure(true, 1); budget.warmUntil = 0; budget.lastAdjustment = -10000;
+  return budget;
+};
+const displayLimited = make(); displayLimited.cpu = Array(50).fill(.5);
+displayLimited.end(.5, 1000 / 60);
+assert.equal(displayLimited.scale, 1, 'A 60 Hz callback must not trigger resolution loss when active work is cheap');
+const overloaded = make(); overloaded.cpu = Array(50).fill(12);
+overloaded.end(12, 20);
+assert.ok(overloaded.scale < 1 && overloaded.scale >= .6, 'Slow active work without a GPU timer lowers resolution within its clarity range');
+const minimum = make(); minimum.scale = .6; minimum.cpu = Array(50).fill(12);
+minimum.end(12, 20);
+assert.equal(minimum.scale, .6, 'Adaptive resolution preserves its clarity floor');
+const waitingForGPU = make(); waitingForGPU.ext = {}; waitingForGPU.cpu = Array(50).fill(12);
+waitingForGPU.end(12, 20);
+assert.equal(waitingForGPU.scale, 1, 'Advertised GPU timing must warm up instead of using misleading CPU stalls');
+const gpuBound = make(); gpuBound.ext = {}; gpuBound.cpu = Array(50).fill(.5); gpuBound.gpu = Array(50).fill(10);
+gpuBound.end(.5, 10);
+assert.ok(gpuBound.scale < 1 && gpuBound.scale >= .6, 'GPU load can lower resolution despite cheap CPU submission');
+const high = make(); high.configure(false, 1); high.warmUntil = 0; high.lastAdjustment = -10000; high.cpu = Array(50).fill(12);
+high.end(12, 20);
+assert.equal(high.scale, 1, 'Manual High quality never adapts resolution');
+console.log('6 render-budget checks passed');

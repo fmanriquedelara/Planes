@@ -1,6 +1,7 @@
 extends Node3D
 
 var time := 0.0
+@export var startup_position := Vector3(2500, 2200, 12000)
 var V := 100.0
 
 var attitude := Quaternion.IDENTITY
@@ -15,7 +16,7 @@ var der_tip_deformationL = 0.0;
 var tip_deformationR = 0.0;
 var der_tip_deformationR = 0.0;
 
-var idxCamera = 0;
+var idxCamera = 1;
 
 var lookSideFilt = 0;
 var lookUpFilt = 0;
@@ -34,11 +35,13 @@ var tau_yaw := 0.2
 @onready var wing: MeshInstance3D = $Eurofighter/Sketchfab_model/root/GLTF_SceneRootNode/Airframe_0/Object_4
 @onready var hud: Label = $CanvasLayer/Label
 @onready var cameras : Array[Camera3D]=[$Camera3D, $CameraCockpit/Camera3D_cockpit]
+@onready var camera_base_rotations: Array[Vector3] = [cameras[0].rotation, cameras[1].rotation]
 var wing_material: ShaderMaterial
 
 
 func _ready():
-	position = Vector3(0, 10, 0)
+	position = startup_position
+	cameras[idxCamera].make_current()
 
 	engine_sound.play()
 	engine_sound.volume_db = -4.0
@@ -271,7 +274,8 @@ func _moveCamera(delta):
 	lookSideFilt = lookSideFilt + delta  * der_lookSide;
 	lookUpFilt = lookUpFilt + delta  * der_lookUp;
 	
-	cameras[idxCamera].rotation = Vector3(lookUpFilt,-lookSideFilt, 0.0);
+	# Apply look input relative to each camera's calibrated scene orientation.
+	cameras[idxCamera].rotation = camera_base_rotations[idxCamera] + Vector3(lookUpFilt,-lookSideFilt, 0.0);
 	
 		
 

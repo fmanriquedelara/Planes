@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a1720" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content="An atmospheric Three.js flight prototype: a pilot's view over a living coastline." />
+    <title>Stratos — PlanesRace Flight Study</title>
+  </head>
+  <body>
+    <main id="app">
+      <canvas id="flight" aria-label="Interactive 3D flight view. Drag to look around; use arrow keys to bank and pitch."></canvas>
+      <div id="loading" class="loading" role="status"><div class="loading-mark">S</div><p>BUILDING THE HORIZON</p><span id="loading-detail">Preparing atmosphere and terrain</span></div>
+      <header class="masthead overlay">
+        <div class="identity"><span class="symbol" aria-hidden="true">⌁</span><div><h1>STRATOS</h1><p>PLANESRACE · FLIGHT STUDY 01</p></div></div>
+        <div class="flight-status"><span class="status-dot"></span><span id="status-text">AUTOPILOT · COASTLINE</span><span class="separator"></span><span id="fps">— FPS</span></div>
+      </header>
+      <div id="scene-title" class="scene-title overlay"><span>01 / THE COAST</span><p>A little closer to the real thing.</p></div>
+      <section class="telemetry overlay" aria-label="Flight instruments">
+        <div><span>AIRSPEED</span><strong id="speed">360<span> KM/H</span></strong></div>
+        <div><span>ALTITUDE</span><strong id="altitude">1,800<span> M</span></strong></div>
+        <div><span>HEADING</span><strong id="heading">000<span> °</span></strong></div>
+      </section>
+      <nav class="toolbar overlay" aria-label="Scene controls">
+        <div class="segmented" role="group" aria-label="Camera view"><button id="pilot-view" class="active" aria-pressed="true">PILOT</button><button id="chase-view" aria-pressed="false">EXTERIOR</button></div>
+        <span class="toolbar-divider"></span>
+        <button id="pause" aria-label="Pause flight">Ⅱ <span>PAUSE</span></button>
+        <button id="settings-toggle" aria-expanded="false" aria-controls="settings">☷ <span>SCENE</span></button>
+        <button id="fullscreen" aria-label="Toggle fullscreen">⛶</button>
+      </nav>
+      <aside id="settings" class="settings overlay" hidden aria-label="Scene settings">
+        <div class="panel-heading"><h2>Shape the moment</h2><button id="close-settings" aria-label="Close scene settings">×</button></div>
+        <label class="select-label">LIGHT STUDY<select id="preset"><option value="golden">Golden coast</option><option value="daylight">Clear daylight</option><option value="clouds">Above the clouds</option></select></label>
+        <label>FIELD OF VIEW <output id="fov-value">68°</output><input id="fov" type="range" min="48" max="90" value="68" /></label>
+        <label>CLOUD COVER <output id="cloud-value">45%</output><input id="cloud-cover" type="range" min="0" max="100" value="45" /></label>
+        <label>EXPOSURE <output id="exposure-value">1.00</output><input id="exposure" type="range" min="65" max="140" value="100" /></label>
+        <label class="select-label">RENDER QUALITY<select id="quality"><option value="performance" selected>120 FPS target · Adaptive</option><option value="high">High · Full detail</option><option value="balanced">Balanced</option></select></label>
+        <p class="panel-note">Drag to look · Arrow keys to fly<br>W / S throttle · R reset · H hide interface<br><a href="/credits.html" target="_blank" rel="noopener">Aircraft credits ↗</a></p>
+      </aside>
+      <p class="interaction-hint overlay" id="hint">DRAG TO LOOK <span>·</span> ARROWS TO FLY <span>·</span> H FOR A CLEAN VIEW</p>
+      <div id="error" class="error" role="alert" hidden></div>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
