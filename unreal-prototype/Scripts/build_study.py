@@ -7,6 +7,14 @@ import unreal
 
 ROOT = pathlib.Path(unreal.Paths.project_dir()).resolve()
 REPO = ROOT.parent
+AIRCRAFT = "gripen"
+MODEL_CONFIG = {
+    # The source's inherited .04 display scale is undersized in a cm world.
+    # Scale the calibrated eye equally: framing is retained at ~16 m length.
+    "eurofighter": {"source": REPO / "Godot" / "Planes" / "HighResEurofighter.glb", "scale": .1, "eye_cm": (650, 0, 122.5)},
+    "gripen": {"source": REPO / "Shark 600" / "saab_jas_39a_gripen_detailed_cockpit.glb", "scale": 1.0, "eye_cm": (503, 0, 65)},
+}[AIRCRAFT]
+IMPORT_PATH = "/Game/Aircraft/" + ("Eurofighter" if AIRCRAFT == "eurofighter" else "Gripen")
 OUT = ROOT / "artifacts"
 OUT.mkdir(exist_ok=True)
 ASSETS = unreal.AssetToolsHelpers.get_asset_tools()
@@ -105,16 +113,16 @@ else:
     if not LEVEL.new_level("/Game/Maps/CockpitStudy"):
         raise RuntimeError("Cannot create study map")
 manager = unreal.InterchangeManager.get_interchange_manager_scripted()
-source = manager.create_source_data(str(REPO / "Shark 600" / "saab_jas_39a_gripen_detailed_cockpit.glb"))
+source = manager.create_source_data(str(MODEL_CONFIG["source"]))
 params = unreal.ImportAssetParameters()
 params.is_automated = True
 params.replace_existing = True
-log("Importing Gripen scene")
-if not manager.import_scene("/Game/Aircraft/Gripen", source, params):
-    raise RuntimeError("Interchange Gripen scene import failed")
+log("Importing " + AIRCRAFT + " scene")
+if not manager.import_scene(IMPORT_PATH, source, params):
+    raise RuntimeError("Interchange aircraft scene import failed")
 imported = list(ACTORS.get_all_level_actors())
 log("Imported actors: " + str(len(imported)))
-for path in unreal.EditorAssetLibrary.list_assets("/Game/Aircraft/Gripen", recursive=True, include_folder=False):
+for path in unreal.EditorAssetLibrary.list_assets(IMPORT_PATH, recursive=True, include_folder=False):
     asset = unreal.load_asset(path)
     if isinstance(asset, unreal.StaticMesh):
         settings = asset.get_editor_property("nanite_settings")
@@ -126,14 +134,18 @@ AIRCRAFT_ALTITUDE = 180000.0
 for actor in imported:
     if actor.get_attach_parent_actor() is None:
         p = actor.get_actor_location()
-        actor.set_actor_location(unreal.Vector(p.x, p.y, p.z + AIRCRAFT_ALTITUDE), False, False)
+        scale = MODEL_CONFIG["scale"]
+        s = actor.get_actor_scale3d()
+        actor.set_actor_scale3d(unreal.Vector(s.x * scale, s.y * scale, s.z * scale))
+        actor.set_actor_location(unreal.Vector(p.x * scale, p.y * scale, p.z * scale + AIRCRAFT_ALTITUDE), False, False)
 
 dark = flat_material("M_InteriorDark", (.025, .035, .045), .7)
 glass = flat_material("M_CanopyGlass", (.055, .10, .14), emissive=True, opacity=.025)
-screen = radar_material()
+screen = radar_material() if AIRCRAFT == "gripen" else None
 hud_glass = flat_material("M_HUDGlass", (.04, .12, .08), emissive=True, opacity=.015)
 mirror = flat_material("M_CanopyMirror", (.035, .05, .065), .24, metallic=1)
 material_names = []
+hidden_duplicate_parts = []
 for actor in imported:
     for component in actor.get_components_by_class(unreal.StaticMeshComponent):
         for slot in range(component.get_num_materials()):
@@ -142,6 +154,21 @@ for actor in imported:
                 continue
             name = mat.get_name().lower()
             material_names.append(name)
+            if AIRCRAFT == "eurofighter":
+                # The Blender derivative contains the same cockpit triangles
+                # twice. Keep its improved Airframe.002 atlas, hide the older
+                # overlapping Airframe copy rather than inventing new geometry.
+                mesh_name = component.static_mesh.get_name().lower() if component.static_mesh else ""
+                if actor.get_actor_label().lower() == "object_8" or mesh_name == "object_2":
+                    component.set_visibility(False, True)
+                    hidden_duplicate_parts.append(actor.get_actor_label())
+                elif name == "glass":
+                    component.set_material(slot, glass)
+                    setp(component, "cast_shadow", False)
+                elif name == "material":
+                    component.set_material(slot, hud_glass)
+                    setp(component, "cast_shadow", False)
+                continue
             if "jet_flame" in name or "gunfire" in name:
                 component.set_visibility(False, True)
             elif name in ["dynamic_mfd_trans", "dynamic_glass_tone"]:
@@ -156,6 +183,17 @@ for actor in imported:
                 component.set_material(slot, mirror)
             elif name in ["saab_jas39a_inside", "saab_jas39a_interior", "mesh1"]:
                 component.set_material(slot, dark)
+
+log("Creating native kinematic flight rig")
+rig = spawn(unreal.PlanesStudyPawn, "Pilot flight rig", location=(0, 0, AIRCRAFT_ALTITUDE))
+rig.set_editor_property("tags", ["PlanesPilotRig", "PlanesAircraftGripen" if AIRCRAFT == "gripen" else "PlanesAircraftEurofighter"])
+for actor in imported:
+    for component in actor.get_components_by_class(unreal.SceneComponent):
+        component.set_mobility(unreal.ComponentMobility.MOVABLE)
+    if actor.get_attach_parent_actor() is None:
+        if not actor.attach_to_actor(rig, "None", unreal.AttachmentRule.KEEP_WORLD,
+                                     unreal.AttachmentRule.KEEP_WORLD, unreal.AttachmentRule.KEEP_WORLD, False):
+            raise RuntimeError("Cannot attach aircraft root to flight rig: " + actor.get_name())
 
 log("Creating native atmosphere")
 sun = spawn(unreal.DirectionalLight, "Warm low sun", rotation=(-23, -42, 0))
@@ -186,10 +224,17 @@ ocean.set_actor_scale3d(unreal.Vector(200000, 200000, 1))
 
 sys.path.insert(0, str(ROOT / "Scripts"))
 from terrain_study import create_terrain
+from study_audio import import_study_audio
+import_study_audio(ROOT)
 terrain_report = create_terrain(ROOT, ACTORS, ASSETS)
 
-camera = spawn(unreal.CineCameraActor, "PilotEye", location=(503, 0, AIRCRAFT_ALTITUDE + 65), rotation=(-4, 0, 0))
+eye = MODEL_CONFIG["eye_cm"]
+camera = spawn(unreal.CineCameraActor, "PilotEye", location=(eye[0], eye[1], AIRCRAFT_ALTITUDE + eye[2]), rotation=(-4, 0, 0))
 camera.set_editor_property("auto_activate_for_player", unreal.AutoReceiveInput.PLAYER0)
+camera.set_editor_property("tags", ["PlanesPilotCamera"])
+if not camera.attach_to_actor(rig, "None", unreal.AttachmentRule.KEEP_WORLD,
+                              unreal.AttachmentRule.KEEP_WORLD, unreal.AttachmentRule.KEEP_WORLD, False):
+    raise RuntimeError("Cannot attach pilot camera to flight rig")
 cc = camera.get_cine_camera_component()
 filmback = cc.get_editor_property("filmback")
 filmback.sensor_width = 36
@@ -266,6 +311,6 @@ unreal.EditorAssetLibrary.save_directory("/Game", only_if_is_dirty=True, recursi
 if not LEVEL.save_current_level():
     raise RuntimeError("Study map failed to save")
 camera_position = camera.get_actor_location()
-report = {"engine": unreal.SystemLibrary.get_engine_version(), "imported_actors": len(imported), "materials": sorted(set(material_names)), "camera_location_cm": [camera_position.x, camera_position.y, camera_position.z], "camera_constrain_aspect_ratio": cc.get_editor_property("constrain_aspect_ratio"), "camera_aspect_axis": str(cc.get_editor_property("aspect_ratio_axis_constraint")), "physical_exposure_ev100": 13.0, "cached_lighting_safe_ev_range": [-4, 16], "lumen_tracing": "software mesh distance fields", "map": "/Game/Maps/CockpitStudy", "sequence": sequence.get_path_name(), "render_config": config.get_path_name(), "terrain": terrain_report, "intended_capture_pipeline": "real GPU Movie Render Queue", "render_verified_by_build": False, "limitations": ["Visual study, not interactive flight physics", "Existing cockpit texture detail limits", "Synthetic radar displays are demonstration art, not flight data", "Procedural countryside is a bounded visual study, not mapped real terrain"]}
+report = {"engine": unreal.SystemLibrary.get_engine_version(), "aircraft": AIRCRAFT, "source_file": str(MODEL_CONFIG["source"]), "external_model_scale": MODEL_CONFIG["scale"], "hidden_duplicate_parts": hidden_duplicate_parts, "imported_actors": len(imported), "materials": sorted(set(material_names)), "camera_location_cm": [camera_position.x, camera_position.y, camera_position.z], "camera_constrain_aspect_ratio": cc.get_editor_property("constrain_aspect_ratio"), "camera_aspect_axis": str(cc.get_editor_property("aspect_ratio_axis_constraint")), "physical_exposure_ev100": 13.0, "cached_lighting_safe_ev_range": [-4, 16], "lumen_tracing": "software mesh distance fields", "runtime": "native C++ kinematic flight, Esc Resume/Exit menu", "flight_rig": rig.get_path_name(), "map": "/Game/Maps/CockpitStudy", "sequence": sequence.get_path_name(), "render_config": config.get_path_name(), "terrain": terrain_report, "intended_capture_pipeline": "real GPU Movie Render Queue", "render_verified_by_build": False, "limitations": ["Kinematic imposed pose and speed, not aerodynamic physics", "Existing cockpit texture detail limits", "Eurofighter retains authored cockpit art, without Gripen synthetic radar overrides", "Procedural countryside is a bounded visual study, not mapped real terrain"]}
 (OUT / "build-report.json").write_text(json.dumps(report, indent=2))
 log("BUILD_COMPLETE " + json.dumps(report))

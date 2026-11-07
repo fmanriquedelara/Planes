@@ -1,0 +1,28 @@
+{
+  "revision": 7,
+  "display_bezel_row_span_m": 0.7,
+  "outer_screen_visible_width_m": 0.16,
+  "display_center_spacing_m": 0.235,
+  "center_display_drop_m": 0.053,
+  "hud_top_bar_width_m": 0.264,
+  "combiner_width_m": 0.348,
+  "combiner_height_m": 0.26,
+  "seat_width_m": 0.51,
+  "ratios": {
+    "hud_to_display_row": 0.37714285714285717,
+    "combiner_to_display_row": 0.49714285714285716,
+    "combiner_width_to_height": 1.3384615384615384,
+    "seat_to_display_row": 0.7285714285714286,
+    "display_center_spacing_to_visible_screen": 1.4687499999999998
+  },
+  "reference": "user/front.png + user/oblique.png; approximate manual perspective landmarks, not surveyed dimensions",
+  "hud_combiner_profile": "Continuous curved oval top and narrower lower bowl, corrected from the user day close-up; no flat plateau",
+  "hud_upper_edge_radius_m": 0.00065,
+  "hud_lower_edge_radius_m": 0.0017,
+  "detail_pass_reference": "user/detail-pass/hud-day.png, hud-night.png, oblique.png; simulator-secondary.png secondary only",
+  "instrument_cluster_raise_m": 0.1,
+  "seat_and_stick_forward_correction_m": 0.32,
+  "console_longitudinal_scale": 0.6,
+  "seat_length_m": 0.64974,
+  "comparison_camera_status": "estimated inspection poses, not a solved photo calibration"
+}

@@ -27,6 +27,18 @@ Do not create separate user-owned chats unless the user asks for them.
   Add `-NativeResolution -Fullscreen` for the user's monitor, or `-Ultrawide`
   for 3440x1440. This uses the installed UE executable in game mode; no packaged
   game executable exists yet. Do not describe it as a packaged build.
+- The Unreal project now includes a native runtime module. On a fresh checkout,
+  run the helper with `-Mode Compile`, then `-Mode Build`, before Play. Compile
+  after C++ changes; Python Build only prepares scene assets. See the README for
+  compiler/SDK and local generated-cache locations.
+- Flight: arrows pitch/bank, Q/E yaw, W/S engine/brake, R reset; Esc pauses with
+  Resume/Exit. `-Mode Test -Ultrawide` checks runtime input/menu behavior offscreen.
+  The standalone C++ flight model ports Godot/Plane.gd. Preserve the separation
+  between its state step and Unreal input, camera and coordinate conversion.
+- Camera controls: C cycles cockpit/chase/canopy, 1/2/3 select directly, held RMB
+  looks, I/K J/L U/O move, Home resets active view/FOV. Esc also adjusts vertical
+  FOV and four cloud presets. Inspect all three camera renders after camera/mesh
+  changes: passing input tests does not establish an unobstructed camera.
 - Use `-Mode GameCapture -Ultrawide` for normal-game offscreen evidence with
   screen warnings enabled. MRQ `-Mode Capture` is an offline cinematic still and
   can hide startup warnings; it cannot validate a clean normal-game viewport.

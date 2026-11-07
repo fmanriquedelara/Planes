@@ -3,7 +3,7 @@
   "EngineAssociation": "5.8",
   "Category": "Visual prototype",
   "Description": "Isolated PlanesRace cockpit visual study",
-  "Modules": [],
+  "Modules": [{"Name": "PlanesUnreal", "Type": "Runtime", "LoadingPhase": "Default"}],
   "DisableEnginePluginsByDefault": true,
   "Plugins": [
     {"Name": "PythonScriptPlugin", "Enabled": true},

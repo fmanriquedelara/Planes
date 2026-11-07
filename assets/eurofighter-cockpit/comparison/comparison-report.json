@@ -1,0 +1,605 @@
+{
+  "source_blend_sha256": "4534a082b74f401de408a7e25351501946ad7204b46e529a0c1d9f301a9db803",
+  "source_glb_sha256": "8b4345757cd98eeaebbf487a550fa58fc5d377a46216618fac62fc326515f53d",
+  "geometry_modified": false,
+  "glass_panes_hidden_for_comparison": true,
+  "cameras": {
+    "front": {
+      "location_m": [
+        -0.35,
+        0,
+        1.0
+      ],
+      "target_m": [
+        0.65,
+        0,
+        -0.22
+      ],
+      "lens_mm": 42,
+      "shift_x": 0,
+      "shift_y": -0.09,
+      "resolution": [
+        499,
+        615
+      ],
+      "scope": "Reviewed whole-cockpit inspection compromise; cushion and instruments visible; not calibrated",
+      "fit_method": "Manual camera review with rendered trials; 42mm perspective on horizontal 36mm sensor; old panel-only optimizer rejected",
+      "horizontal_fov_degrees": 46.39718102729637,
+      "review": "camera-review/proposed-front.json",
+      "supersedes": "Initial low 110mm instrument-only camera, archived under artifacts/initial-camera-fit",
+      "landmarks": [
+        {
+          "name": "left_screen",
+          "world_m": [
+            0.809,
+            0.235,
+            -0.302
+          ],
+          "photo_px": [
+            157,
+            252
+          ],
+          "projected_px": [
+            170.94983945573864,
+            238.86208480136665
+          ],
+          "error_px": 19.162537321747443,
+          "weight": 2
+        },
+        {
+          "name": "right_screen",
+          "world_m": [
+            0.809,
+            -0.235,
+            -0.302
+          ],
+          "photo_px": [
+            345,
+            252
+          ],
+          "projected_px": [
+            328.05016054426136,
+            238.86208480136665
+          ],
+          "error_px": 21.445322878002923,
+          "weight": 2
+        },
+        {
+          "name": "center_screen",
+          "world_m": [
+            0.809,
+            0,
+            -0.355
+          ],
+          "photo_px": [
+            249,
+            279
+          ],
+          "projected_px": [
+            249.5,
+            250.37984033284735
+          ],
+          "error_px": 28.624526884706956,
+          "weight": 2
+        },
+        {
+          "name": "left_top_left",
+          "world_m": [
+            0.809,
+            0.315,
+            -0.2195
+          ],
+          "photo_px": [
+            125,
+            222
+          ],
+          "projected_px": [
+            140.2054515220428,
+            219.81374146292936
+          ],
+          "error_px": 15.36181898018943,
+          "weight": 1
+        },
+        {
+          "name": "left_bottom_right",
+          "world_m": [
+            0.809,
+            0.155,
+            -0.3845
+          ],
+          "photo_px": [
+            190,
+            280
+          ],
+          "projected_px": [
+            199.5212464474513,
+            256.5641113050033
+          ],
+          "error_px": 25.2961462052499,
+          "weight": 1
+        },
+        {
+          "name": "right_top_right",
+          "world_m": [
+            0.809,
+            -0.315,
+            -0.2195
+          ],
+          "photo_px": [
+            380,
+            223
+          ],
+          "projected_px": [
+            358.79454847795716,
+            219.81374146292936
+          ],
+          "error_px": 21.443493598729763,
+          "weight": 1
+        },
+        {
+          "name": "right_bottom_left",
+          "world_m": [
+            0.809,
+            -0.155,
+            -0.3845
+          ],
+          "photo_px": [
+            314,
+            280
+          ],
+          "projected_px": [
+            299.4787535525487,
+            256.5641113050033
+          ],
+          "error_px": 27.570046741198894,
+          "weight": 1
+        },
+        {
+          "name": "hud_bar_left",
+          "world_m": [
+            0.724,
+            0.132,
+            -0.108
+          ],
+          "photo_px": [
+            197,
+            161
+          ],
+          "projected_px": [
+            199.52721742777214,
+            214.04411197590318
+          ],
+          "error_px": 53.10428083722997,
+          "weight": 1
+        },
+        {
+          "name": "hud_bar_right",
+          "world_m": [
+            0.724,
+            -0.132,
+            -0.108
+          ],
+          "photo_px": [
+            298,
+            161
+          ],
+          "projected_px": [
+            299.47278257222786,
+            214.04411197590318
+          ],
+          "error_px": 53.06455411870727,
+          "weight": 1
+        }
+      ],
+      "anchor_rms_px": 30.31042097468252
+    },
+    "oblique": {
+      "location_m": [
+        -0.1646655575910261,
+        -0.9292441510973917,
+        0.4608752645875705
+      ],
+      "target_m": [
+        0.3542294330085556,
+        -0.292576026078767,
+        -0.10956464225269341
+      ],
+      "camera_matrix_columns": [
+        [
+          0.7154978795434962,
+          -0.6886239484086605,
+          -0.11772783038358907
+        ],
+        [
+          0.4677721380110413,
+          0.3470601623109967,
+          0.8128582106599183
+        ],
+        [
+          -0.5188949905995817,
+          -0.6366681250186247,
+          0.5704399068402639
+        ]
+      ],
+      "lens_mm": 56.07374125627105,
+      "shift_x": 0.0,
+      "shift_y": 0,
+      "resolution": [
+        1125,
+        1500
+      ],
+      "roll_rad": -0.14383181702263081,
+      "fit_method": "Rigid pinhole, manually estimated landmarks; no geometry changes; fixed principal point estimate; lens distortion unmodeled",
+      "landmarks": [
+        {
+          "name": "left_top_left",
+          "world_m": [
+            0.809,
+            0.315,
+            -0.2195
+          ],
+          "photo_px": [
+            477,
+            412
+          ],
+          "projected_px": [
+            479.2658929873802,
+            402.5230711291726
+          ],
+          "error_px": 9.744046995626652,
+          "weight": 1
+        },
+        {
+          "name": "left_top_right",
+          "world_m": [
+            0.809,
+            0.155,
+            -0.2195
+          ],
+          "photo_px": [
+            612,
+            461
+          ],
+          "projected_px": [
+            595.8258312122608,
+            441.61537406249204
+          ],
+          "error_px": 25.246137500841247,
+          "weight": 1
+        },
+        {
+          "name": "left_bottom_left",
+          "world_m": [
+            0.809,
+            0.315,
+            -0.3845
+          ],
+          "photo_px": [
+            475,
+            547
+          ],
+          "projected_px": [
+            502.79478913691634,
+            552.9623872163776
+          ],
+          "error_px": 28.427106157392544,
+          "weight": 1
+        },
+        {
+          "name": "left_bottom_right",
+          "world_m": [
+            0.809,
+            0.155,
+            -0.3845
+          ],
+          "photo_px": [
+            610,
+            588
+          ],
+          "projected_px": [
+            614.2443077661358,
+            598.995641858885
+          ],
+          "error_px": 11.786360265261937,
+          "weight": 1
+        },
+        {
+          "name": "center_screen",
+          "world_m": [
+            0.809,
+            0,
+            -0.355
+          ],
+          "photo_px": [
+            744,
+            618
+          ],
+          "projected_px": [
+            733.8958372489438,
+            621.272514100543
+          ],
+          "error_px": 10.620897016640528,
+          "weight": 2
+        },
+        {
+          "name": "right_top_left",
+          "world_m": [
+            0.809,
+            -0.155,
+            -0.2195
+          ],
+          "photo_px": [
+            899,
+            567
+          ],
+          "projected_px": [
+            870.4080648790131,
+            533.7057785537745
+          ],
+          "error_px": 43.886261354472055,
+          "weight": 1
+        },
+        {
+          "name": "right_top_right",
+          "world_m": [
+            0.809,
+            -0.315,
+            -0.2195
+          ],
+          "photo_px": [
+            1055,
+            624
+          ],
+          "projected_px": [
+            1045.1448792795175,
+            592.309657263532
+          ],
+          "error_px": 33.187365474983,
+          "weight": 1
+        },
+        {
+          "name": "right_bottom_left",
+          "world_m": [
+            0.809,
+            -0.155,
+            -0.3845
+          ],
+          "photo_px": [
+            875,
+            695
+          ],
+          "projected_px": [
+            873.8244137792974,
+            706.2129476597922
+          ],
+          "error_px": 11.274404560044223,
+          "weight": 1
+        },
+        {
+          "name": "right_bottom_right",
+          "world_m": [
+            0.809,
+            -0.315,
+            -0.3845
+          ],
+          "photo_px": [
+            1030,
+            750
+          ],
+          "projected_px": [
+            1036.88313494237,
+            773.5629346790579
+          ],
+          "error_px": 24.547697189847003,
+          "weight": 1
+        },
+        {
+          "name": "hud_bar_left",
+          "world_m": [
+            0.724,
+            0.132,
+            -0.108
+          ],
+          "photo_px": [
+            538,
+            366
+          ],
+          "projected_px": [
+            528.9390622923089,
+            364.36227725078544
+          ],
+          "error_px": 9.207753686212142,
+          "weight": 1
+        },
+        {
+          "name": "hud_bar_right",
+          "world_m": [
+            0.724,
+            -0.132,
+            -0.108
+          ],
+          "photo_px": [
+            727,
+            401
+          ],
+          "projected_px": [
+            770.9117426587999,
+            438.3909042470813
+          ],
+          "error_px": 57.67426517734811,
+          "weight": 1
+        }
+      ],
+      "weighted_rms_px": 27.497196615095834,
+      "scope": "Instrument-cluster fit; other geometry is an independent visual comparison"
+    },
+    "hud-day": {
+      "location_m": [
+        -0.2979584626586428,
+        -0.032972910415148146,
+        0.629988586852602
+      ],
+      "target_m": [
+        0.5676511961241657,
+        -0.0065015936797553735,
+        0.1299693992085632
+      ],
+      "camera_matrix_columns": [
+        [
+          0.027090359853017124,
+          -0.9996148458311234,
+          -0.006022656976249211
+        ],
+        [
+          0.4999860308298062,
+          0.008332429676513323,
+          0.8659933831102534
+        ],
+        [
+          -0.8656096587828085,
+          -0.026471316735392773,
+          0.5000191876440387
+        ]
+      ],
+      "lens_mm": 73.80464067265552,
+      "shift_x": -0.06588520614389648,
+      "shift_y": 0,
+      "resolution": [
+        1237,
+        1178
+      ],
+      "roll_rad": -0.006954510274212158,
+      "fit_method": "Rigid pinhole, manually estimated landmarks; no geometry changes; fixed principal point estimate; lens distortion unmodeled",
+      "landmarks": [
+        {
+          "name": "bar_left",
+          "world_m": [
+            0.724,
+            0.132,
+            -0.108
+          ],
+          "photo_px": [
+            433,
+            842
+          ],
+          "projected_px": [
+            432.32747800728345,
+            844.5249183335576
+          ],
+          "error_px": 2.6129482240991115,
+          "weight": 1
+        },
+        {
+          "name": "bar_right",
+          "world_m": [
+            0.724,
+            -0.132,
+            -0.108
+          ],
+          "photo_px": [
+            963,
+            842
+          ],
+          "projected_px": [
+            965.8013287634537,
+            850.4116557611228
+          ],
+          "error_px": 8.86585559799976,
+          "weight": 1
+        },
+        {
+          "name": "lens_top",
+          "world_m": [
+            0.95725,
+            0,
+            0.213
+          ],
+          "photo_px": [
+            704,
+            73
+          ],
+          "projected_px": [
+            706.957400171908,
+            66.97819722211216
+          ],
+          "error_px": 6.7088243733592705,
+          "weight": 1
+        },
+        {
+          "name": "lens_left",
+          "world_m": [
+            0.92475,
+            0.174,
+            0.083
+          ],
+          "photo_px": [
+            369,
+            320
+          ],
+          "projected_px": [
+            376.7339976457218,
+            324.7116136109519
+          ],
+          "error_px": 9.056159362717567,
+          "weight": 1
+        },
+        {
+          "name": "lens_right",
+          "world_m": [
+            0.92475,
+            -0.174,
+            0.083
+          ],
+          "photo_px": [
+            1054,
+            320
+          ],
+          "projected_px": [
+            1038.7126251747632,
+            328.4152343869082
+          ],
+          "error_px": 17.450501392048515,
+          "weight": 1
+        },
+        {
+          "name": "lens_bottom",
+          "world_m": [
+            0.89225,
+            0,
+            -0.047
+          ],
+          "photo_px": [
+            707,
+            598
+          ],
+          "projected_px": [
+            706.2217895323673,
+            572.1602871637368
+          ],
+          "error_px": 25.851428799826074,
+          "weight": 1
+        },
+        {
+          "name": "center_screen",
+          "world_m": [
+            0.809,
+            0,
+            -0.355
+          ],
+          "photo_px": [
+            694,
+            1088
+          ],
+          "projected_px": [
+            705.1712188323337,
+            1111.8190981859234
+          ],
+          "error_px": 26.30865957418861,
+          "weight": 0.3
+        }
+      ],
+      "weighted_rms_px": 14.869342494539321,
+      "scope": "Local HUD comparison; fit uses lens anchors, so lens agreement is not independent validation"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": "Godot/Planes/HighResEurofighter.glb",
+  "source_object": "Object_4",
+  "removed_vertices": 91,
+  "removed_bounds_min_m": [
+    6.976432800292969,
+    -0.4479002058506012,
+    0.7742342352867126
+  ],
+  "removed_bounds_max_m": [
+    7.224648952484131,
+    0.447897344827652,
+    1.330692172050476
+  ],
+  "remaining_triangles": 13129,
+  "coordinates": "full aircraft metres; Blender +X forward,+Y left,+Z up; attach rig origin scale1",
+  "license": "CC BY-NC-SA 4.0, original author bohmerang"
+}

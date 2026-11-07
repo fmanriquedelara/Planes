@@ -1,0 +1,9 @@
+!EurofighterCockpit.blend
+*.blend1
+*.log
+references/
+source-part-diagnostic.png
+source-components.json
+artifacts/
+__pycache__/
+/preview-*.png

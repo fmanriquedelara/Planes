@@ -1,0 +1,99 @@
+{
+  "coordinate_system": "Blender +X forward, +Y pilot-left, +Z up; metres; origin pilot eye",
+  "unreal_attachment_cm": [
+    650,
+    0,
+    122.5
+  ],
+  "source_fit_scale": 0.1,
+  "bounds_min_m": [
+    -1.100000023841858,
+    -0.532198429107666,
+    -1.090000033378601
+  ],
+  "bounds_max_m": [
+    1.590000033378601,
+    0.532198429107666,
+    0.335999995470047
+  ],
+  "triangles": 168228,
+  "mesh_sections": 18,
+  "materials": [
+    "EF_Graphite",
+    "EF_Rubber",
+    "EF_PanelGrey",
+    "EF_Hardware",
+    "EF_Legends",
+    "EF_SafetyRed",
+    "EF_SafetyYellow",
+    "EF_DisplayArt",
+    "EF_ProjectorOptics",
+    "EF_HUDControlDisplay",
+    "EF_OpticalGlass",
+    "EF_CanopyBow_Graphite",
+    "EF_CanopyBow_Rubber",
+    "EF_CanopyBow_Hardware",
+    "EF_CanopyBow_PanelGrey",
+    "EF_SeatCover",
+    "EF_Harness",
+    "EF_OliveFabric"
+  ],
+  "textures": [
+    {
+      "name": "harness-weave.png",
+      "size": [
+        512,
+        512
+      ],
+      "source_png_bytes": 199991,
+      "decoded_rgba8_bytes": 1048576
+    },
+    {
+      "name": "hud-controls.png",
+      "size": [
+        512,
+        256
+      ],
+      "source_png_bytes": 3912,
+      "decoded_rgba8_bytes": 524288
+    },
+    {
+      "name": "instruments.png",
+      "size": [
+        1536,
+        512
+      ],
+      "source_png_bytes": 61430,
+      "decoded_rgba8_bytes": 3145728
+    },
+    {
+      "name": "legends.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "source_png_bytes": 87943,
+      "decoded_rgba8_bytes": 16777216
+    },
+    {
+      "name": "olive-weave.png",
+      "size": [
+        512,
+        512
+      ],
+      "source_png_bytes": 199992,
+      "decoded_rgba8_bytes": 1048576
+    }
+  ],
+  "engine_authoring": "3.6.2",
+  "limitations": [
+    "Reference-informed visual model, not engineering survey",
+    "Illustrative static display art; no working avionics",
+    "No photographic pixels used as textures",
+    "Performance must be measured in Unreal"
+  ],
+  "texture_source_png_bytes": 553268,
+  "texture_decoded_rgba8_bytes": 22544384,
+  "texture_full_mip_chain_rgba8_estimate_bytes": 30059179,
+  "texture_memory_note": "Conservative decoded RGBA8 estimate, not measured VRAM. Unreal compression, mips and residency differ; 1536x512 display atlas is non-power-of-two."
+}

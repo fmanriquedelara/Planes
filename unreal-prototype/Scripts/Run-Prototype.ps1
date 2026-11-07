@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Build', 'Capture', 'GameCapture', 'Play', 'Editor')]
+    [ValidateSet('Compile', 'Build', 'Capture', 'GameCapture', 'Test', 'Play', 'Editor')]
     [string]$Mode = 'Play',
     [string]$EngineRoot = 'C:\Program Files\Epic Games\UE_5.8',
     [switch]$Ultrawide,
@@ -27,9 +27,9 @@ if (($Width -eq 0) -ne ($Height -eq 0)) {
 if ($Fullscreen -and $Mode -ne 'Play') {
     throw '-Fullscreen is for visible Play mode. GameCapture is offscreen.'
 }
-if ($Mode -notin @('Play', 'GameCapture') -and
+if ($Mode -notin @('Play', 'GameCapture', 'Test') -and
     ($Ultrawide -or $NativeResolution -or $Width -or $Height -or $Fullscreen)) {
-    throw 'Resolution options apply to Play and GameCapture. Capture uses the saved MRQ preset.'
+    throw 'Resolution options apply to Play, GameCapture and Test. Capture uses the saved MRQ preset.'
 }
 $viewportWidth = 1600
 $viewportHeight = 1000
@@ -46,6 +46,22 @@ if ($NativeResolution) {
 if ($Width -and $Height) {
     $viewportWidth = $Width
     $viewportHeight = $Height
+}
+
+if ($Mode -eq 'Compile') {
+    $buildBatch = Join-Path $EngineRoot 'Engine\Build\BatchFiles\Build.bat'
+    & $buildBatch 'PlanesUnrealEditor' 'Win64' 'Development' "-Project=$projectPath" `
+        '-WaitMutex' '-NoHotReloadFromIDE' '-NoUBA'
+    if ($LASTEXITCODE -ne 0) {
+        throw "Runtime module compilation failed with code $LASTEXITCODE."
+    }
+    Write-Output 'Unreal runtime module compiled successfully.'
+    return
+}
+$projectDescriptor = Get-Content -LiteralPath $projectPath -Raw | ConvertFrom-Json
+if ($projectDescriptor.Modules.Count -gt 0 -and
+    !(Test-Path -LiteralPath (Join-Path $prototypeRoot 'Binaries\Win64\UnrealEditor-PlanesUnreal.dll'))) {
+    throw 'Runtime module is not compiled. Run this script with -Mode Compile first, then -Mode Build.'
 }
 
 $unrealArguments = @($projectPath)
@@ -84,6 +100,15 @@ switch ($Mode) {
             '-windowed', '-ForceRes', '-unattended', '-nosplash', '-nosound', '-NoP4',
             "-ResX=$viewportWidth", "-ResY=$viewportHeight",
             "-ExecCmds=$shotCommand,$quitCommand", "-abslog=$logsPath\GameCapture.log")
+    }
+    'Test' {
+        $testStarted = Get-Date
+        $testOutput = Join-Path $prototypeRoot "artifacts\runtime-${viewportWidth}x${viewportHeight}"
+        New-Item -ItemType Directory -Force -Path $testOutput | Out-Null
+        $unrealArguments += @('/Game/Maps/CockpitStudy', '-game', '-RenderOffscreen',
+            '-windowed', '-ForceRes', '-unattended', '-nosplash', '-nosound', '-NoP4',
+            "-ResX=$viewportWidth", "-ResY=$viewportHeight", '-PlanesSelfTest',
+            "-PlanesTestOutput=$testOutput", "-abslog=$logsPath\RuntimeTest.log")
     }
     'Editor' {
         $unrealExecutable = $editorPath
@@ -146,4 +171,31 @@ if ($Mode -eq 'GameCapture') {
     } | ConvertTo-Json | Set-Content -LiteralPath `
         (Join-Path $artifactsPath "game-${viewportWidth}x${viewportHeight}.json") -Encoding utf8
     Write-Output "Normal game capture (screen messages enabled): $gameCapturePath"
+}
+if ($Mode -eq 'Test') {
+    $reportPath = Join-Path $testOutput 'runtime-report.json'
+    if (!(Test-Path -LiteralPath $reportPath) -or
+        (Get-Item -LiteralPath $reportPath).LastWriteTime -lt $testStarted) {
+        throw 'Runtime test did not produce a fresh report. Inspect RuntimeTest.log.'
+    }
+    Copy-Item -LiteralPath (Join-Path $logsPath 'RuntimeTest.log') `
+        -Destination (Join-Path $testOutput 'runtime.log')
+    $runtimeReport = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
+    $failedChecks = @($runtimeReport.checks.PSObject.Properties | Where-Object { $_.Value -ne $true })
+    if ($failedChecks.Count -or $runtimeReport.checks.completed_before_timeout -ne $true) {
+        throw "Runtime checks failed: $($failedChecks.Name -join ', '). See $reportPath."
+    }
+    $testImages = @('runtime-menu.png', 'runtime-flight.png') +
+        @($runtimeReport.snapshots | ForEach-Object { $_.file })
+    foreach ($screenshotName in @($testImages | Where-Object { $_ } | Select-Object -Unique)) {
+        if ([IO.Path]::GetFileName($screenshotName) -ne $screenshotName) {
+            throw 'Runtime snapshot filename must stay inside the test output directory.'
+        }
+        $testScreenshot = Join-Path $testOutput $screenshotName
+        if (!(Test-Path -LiteralPath $testScreenshot) -or
+            (Get-Item -LiteralPath $testScreenshot).LastWriteTime -lt $testStarted) {
+            throw "Runtime test screenshot missing or stale: $testScreenshot"
+        }
+    }
+    Write-Output "Runtime input/menu tests passed: $reportPath"
 }

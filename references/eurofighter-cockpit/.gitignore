@@ -1,0 +1,5 @@
+# Downloaded review copies and spare screenshots. Keep the three source photos
+# read by the Blender comparison builder.
+/*.jpg
+/user/detail-pass/*.png
+!/user/detail-pass/hud-day.png

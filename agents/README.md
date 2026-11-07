@@ -32,3 +32,18 @@ Normal-game warning checks use `-Mode GameCapture`; cinematic MRQ captures do
 not prove that normal gameplay has no screen warnings. Verify the target process
 and fresh output after launch; sandboxed GUI/GPU starts can fail silently and
 may require the execution tool's escalation. Do not stop unrelated UE processes.
+
+The project includes native runtime flight/menu code. A fresh checkout needs
+`-Mode Compile` then `-Mode Build` before Play (generated DLLs are ignored).
+Use `-Mode Test -Ultrawide` for input/menu regression checks. Controls: arrows
+pitch/bank, Q/E yaw, W/S engine/brake, R reset, Esc for the paused Resume/Exit menu.
+Flight uses the small model ported from Godot/Plane.gd. The model lives in
+`unreal-prototype/Source/PlanesUnreal/FlightModel/`.
+The Unreal default aircraft is the SAAB JAS 39 Gripen; Eurofighter assets are
+retained as an option. Inspect the current bootstrap aircraft setting and build report when
+reporting model identity, camera calibration or source attribution.
+Camera controls are C or 1/2/3 for the three views, held RMB to look, I/K J/L U/O
+to translate and Home to reset the active view/FOV. Esc includes vertical FOV and
+four cloud presets. The native Test report lists comparison images and camera
+metadata; inspect those images, not only the boolean checks. See UE-005 for the
+canopy-placement correction and Stark's separate image-quality verdict.
